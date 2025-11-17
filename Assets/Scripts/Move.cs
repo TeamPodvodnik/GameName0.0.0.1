@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-Тест
+// Тест
 public class Hero : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
