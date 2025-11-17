@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-// Тест
 public class Hero : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
@@ -18,7 +17,7 @@ public class Hero : MonoBehaviour
     private void Update()
     {
         Vector2 moveInput = playerInput.actions["Move"].ReadValue<Vector2>();
-        
+
         Vector2 velocity = rb.linearVelocity;
         velocity.x = moveInput.x * speed;
         velocity.y = moveInput.y * speed;
