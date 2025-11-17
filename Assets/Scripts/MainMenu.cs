@@ -14,3 +14,5 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 }
+ // nene тутутувава//
+ 
