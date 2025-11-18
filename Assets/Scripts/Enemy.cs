@@ -2,23 +2,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float health;
-    [SerializeField] private float damage;
-
+    [SerializeField] private float _health;
+    [SerializeField] private float _damage;
     private void Start()
     {
-        if (DifficultyManager.Instance != null)
-        {
-            var currentDifficulty = DifficultyManager.Instance.GetCurrentDifficulty();
-            health = currentDifficulty.enemyHealth;
-            damage = currentDifficulty.enemyDamage;
-            Debug.Log($"Enemy: {health} HP, {damage} damage ({currentDifficulty.name})");
-        }
-        else
-        {
-            Debug.LogError("DifficultyManager is NULL!");
-            damage = 20f;
-        }
         InitializeFromDifficulty();
     }
 
@@ -27,26 +14,21 @@ public class Enemy : MonoBehaviour
         if (DifficultyManager.Instance != null)
         {
             var currentDifficulty = DifficultyManager.Instance.GetCurrentDifficulty();
-            health = currentDifficulty.enemyHealth;
-            damage = currentDifficulty.enemyDamage;
-
-            Debug.Log($"Enemy initialized with: {health} HP and {damage} damage " +
-                     $"({currentDifficulty.name} difficulty)");
+            _health = currentDifficulty.enemyHealth;
+            _damage = currentDifficulty.enemyDamage;
         }
         else
         {
-            health = 100f;
-            damage = 20f;
-            Debug.LogWarning("DifficultyManager not found! Using default values.");
+            _health = 100f;
+            _damage = 20f;
         }
     }
 
     public void TakeDamage(float amount)
     {
-        health -= amount;
-        Debug.Log($"Enemy took {amount} damage. Remaining health: {health}");
+        _health -= amount;
 
-        if (health <= 0)
+        if (_health <= 0)
         {
             Die();
         }
@@ -54,20 +36,11 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Enemy died!");
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public float GetDamage()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
-            {
-                Debug.Log($"Enemy collided with player! Dealing {damage} damage");
-                playerHealth.TakeDamage(damage);
-            }
-        }
+        return _damage;
     }
 }
