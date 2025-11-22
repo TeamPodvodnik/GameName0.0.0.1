@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539761aa3d0c3e2408f6cb634f2900f3, type: 3}
   m_Name: Food Item
   m_EditorClassIdentifier: Assembly-CSharp::FoodItem
+  itemType: 1
+  itemName: 
+  maxAmount: 0
+  itemDescription: 
   healAmount: 0
