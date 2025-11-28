@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1632796346252866681}
   - component: {fileID: 1127498106152719309}
   - component: {fileID: 7747115117337214447}
+  - component: {fileID: 8586643547729367013}
+  - component: {fileID: -4911669636719369088}
   m_Layer: 0
   m_Name: slots 1
   m_TagString: Untagged
@@ -150,5 +152,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74332b19cd25644e8d8b2b7da939aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
+  ID: 0
   itemScriptObject: {fileID: 0}
   amount: 0
+--- !u!225 &8586643547729367013
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5510831939776079207}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &-4911669636719369088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5510831939776079207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1a08a0499c532d4cb718d46af1c62de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDragHandler
