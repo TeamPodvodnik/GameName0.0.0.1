@@ -10,6 +10,10 @@ public class PlayerHealth : MonoBehaviour
     private float _invincibilityTimer;
     private SpriteRenderer _spriteRenderer;
     private Color _originalColor;
+    private MageAbilities _magePowers;
+    private Lvlhandler _lvlHandler;
+
+    public int currentLvl;
 
     private void Start()
     {
@@ -17,6 +21,9 @@ public class PlayerHealth : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _originalColor = _spriteRenderer.color;
         _invincibilityTimer = 0f;
+        _magePowers = GetComponent<MageAbilities>();
+        _lvlHandler = FindFirstObjectByType<Lvlhandler>();
+        levelUp();
     }
 
     private void Update()
@@ -42,6 +49,11 @@ public class PlayerHealth : MonoBehaviour
         {
             if (_invincibilityTimer <= 0)
             {
+                if (_magePowers != null && _magePowers.IsShieldActive())
+                {
+                    return;
+                }
+
                 Enemy enemy = collision.gameObject.GetComponent<Enemy>();
                 if (enemy != null)
                 {
@@ -80,5 +92,15 @@ public class PlayerHealth : MonoBehaviour
     public float GetMaxHealth()
     {
         return _maxHealth;
+    }
+
+    public void GetHealing(float healPoints)
+    {
+        _currentHealth = Mathf.Min(_currentHealth + healPoints, _maxHealth);
+    }
+
+    public void levelUp()
+    {
+        _lvlHandler.CheckLevel(currentLvl);
     }
 }

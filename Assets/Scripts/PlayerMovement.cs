@@ -3,28 +3,28 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 8f;
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
+    public float _moveSpeed = 8f;
+    private Rigidbody2D _body;
+    private SpriteRenderer _sprite;
 
-    private void Awake()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        _body = GetComponent<Rigidbody2D>();
+        _sprite = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        Vector2 moveInput = Vector2.zero;
+        Vector2 moveDir = Vector2.zero;
 
-        if (Keyboard.current.wKey.isPressed) moveInput.y += 1;
-        if (Keyboard.current.sKey.isPressed) moveInput.y -= 1;
-        if (Keyboard.current.aKey.isPressed) moveInput.x -= 1;
-        if (Keyboard.current.dKey.isPressed) moveInput.x += 1;
+        if (Keyboard.current.wKey.isPressed) moveDir.y += 1;
+        if (Keyboard.current.sKey.isPressed) moveDir.y -= 1;
+        if (Keyboard.current.aKey.isPressed) moveDir.x -= 1;
+        if (Keyboard.current.dKey.isPressed) moveDir.x += 1;
 
-        rb.linearVelocity = moveInput * moveSpeed;
+        _body.linearVelocity = moveDir * _moveSpeed;
 
-        if (moveInput.x < 0) spriteRenderer.flipX = true;
-        else if (moveInput.x > 0) spriteRenderer.flipX = false;
+        if (moveDir.x < 0) _sprite.flipX = true;
+        else if (moveDir.x > 0) _sprite.flipX = false;
     }
 }

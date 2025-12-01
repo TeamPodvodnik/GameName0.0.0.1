@@ -25,10 +25,6 @@ public class DifficultyManager : MonoBehaviour
     private void LoadDifficultySettings()
     {
         difficultySettings = Resources.Load<DifficultySettings>("DifficultySettings");
-        if (difficultySettings == null)
-        {
-            Debug.LogError("DifficultySettings not found in Resources!");
-        }
     }
 
     public void SetDifficulty(int difficultyIndex)
@@ -36,7 +32,6 @@ public class DifficultyManager : MonoBehaviour
         if (difficultySettings != null && difficultyIndex >= 0 && difficultyIndex < difficultySettings.difficulties.Length)
         {
             selectedDifficultyIndex = difficultyIndex;
-            Debug.Log($"Difficulty set to index: {difficultyIndex} ({difficultySettings.difficulties[difficultyIndex].name})");
         }
     }
 

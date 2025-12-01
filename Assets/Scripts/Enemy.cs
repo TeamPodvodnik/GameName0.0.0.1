@@ -4,8 +4,11 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _health;
     [SerializeField] private float _damage;
+    private EnemyAI _enemyAI;
+
     private void Start()
     {
+        _enemyAI = GetComponentInParent<EnemyAI>();
         InitializeFromDifficulty();
     }
 
@@ -36,7 +39,35 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        if (_enemyAI != null)
+        {
+            _enemyAI.enabled = false;
+        }
+
+        if (transform.parent != null)
+        {
+            Destroy(transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            MageAbilities mage = collision.gameObject.GetComponent<MageAbilities>();
+            if (mage == null || !mage.IsShieldActive())
+            {
+                PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(GetDamage());
+                }
+            }
+        }
     }
 
     public float GetDamage()
