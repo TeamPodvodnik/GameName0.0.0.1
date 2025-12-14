@@ -47,23 +47,26 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
+        Enemy _enemy = GetComponentInChildren<Enemy>();
+        if (_enemy == null) return;
+
         if (_player == null || _isPlayerIgnored) return;
 
         _attackTime -= Time.deltaTime;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
+        float _distanceToPlayer = Vector3.Distance(transform.position, _player.position);
 
-        if (distanceToPlayer <= _attackRange && _attackTime <= 0f)
+        if (_distanceToPlayer <= _attackRange && _attackTime <= 0f)
         {
             _state = State.Attacking;
             AttackPlayer();
         }
-        else if (distanceToPlayer <= _detectionRange && distanceToPlayer > _attackRange)
+        else if (_distanceToPlayer <= _detectionRange && _distanceToPlayer > _attackRange)
         {
             _state = State.Chasing;
             ChasePlayer();
         }
-        else if (distanceToPlayer > _chaseRange && _state == State.Chasing)
+        else if (_distanceToPlayer > _chaseRange && _state == State.Chasing)
         {
             _state = State.Roaming;
             Roaming();
@@ -111,21 +114,26 @@ public class EnemyAI : MonoBehaviour
 
     private void AttackPlayer()
     {
+        Enemy _enemy = GetComponentInChildren<Enemy>();
+        if (_enemy == null) return;
+
+        if (_player == null) return;
+
         _navMeshAgent.SetDestination(transform.position);
 
-        PlayerHealth playerHealth = _player.GetComponent<PlayerHealth>();
-        if (playerHealth != null)
+        PlayerHealth _playerHealth = _player.GetComponent<PlayerHealth>();
+        if (_playerHealth != null)
         {
-            playerHealth.TakeDamage(GetComponent<Enemy>().GetDamage());
+            _playerHealth.TakeDamage(_enemy.GetDamage());
         }
 
         _attackTime = _attackCooldown;
     }
 
-    public void SetPlayerIgnored(bool ignored)
+    public void SetPlayerIgnored(bool _ignored)
     {
-        _isPlayerIgnored = ignored;
-        if (ignored)
+        _isPlayerIgnored = _ignored;
+        if (_ignored)
         {
             _state = State.Roaming;
             Roaming();

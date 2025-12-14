@@ -6,25 +6,34 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private ToggleGroup difficultyToggleGroup;
     [SerializeField] private string gameSceneName = "level1";
+    [SerializeField] private Button playButton;
+
+    private void Update()
+    {
+        if (playButton != null)
+        {
+            playButton.interactable = PlayerClassManager.Instance.HasClassSelected();
+        }
+    }
 
     public void PlayGame()
     {
-        Debug.Log("PlayGame called");
-        SaveSelectedDifficulty();
-        SceneManager.LoadScene(gameSceneName);
-    }
-    
-    private void SaveSelectedDifficulty()
-    {
-        Debug.Log("SaveSelectedDifficulty called");
-
-        if (difficultyToggleGroup == null)
+        if (!PlayerClassManager.Instance.HasClassSelected())
         {
-            Debug.LogError("ToggleGroup is NULL!");
             return;
         }
 
-        bool foundToggle = false;
+        SaveSelectedDifficulty();
+        SceneManager.LoadScene(gameSceneName);
+    }
+
+    private void SaveSelectedDifficulty()
+    {
+
+        if (difficultyToggleGroup == null)
+        {
+            return;
+        }
 
         foreach (Toggle toggle in difficultyToggleGroup.ActiveToggles())
         {
@@ -33,17 +42,10 @@ public class MainMenu : MonoBehaviour
                 DifficultyToggle difficultyToggle = toggle.GetComponent<DifficultyToggle>();
                 if (difficultyToggle != null)
                 {
-                    Debug.Log($"Found toggle: {toggle.name}, difficulty index: {difficultyToggle.difficultyIndex}");
                     DifficultyManager.Instance.SetDifficulty(difficultyToggle.difficultyIndex);
-                    foundToggle = true;
                     break;
                 }
             }
-        }
-
-        if (!foundToggle)
-        {
-            Debug.LogWarning("No active toggle found!");
         }
     }
 
