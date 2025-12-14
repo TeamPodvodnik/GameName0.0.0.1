@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1490166700661042254}
   - component: {fileID: 630407076269943305}
   - component: {fileID: 3578173458791290282}
-  - component: {fileID: 8541440354929918021}
   - component: {fileID: 7016298019732503908}
+  - component: {fileID: -7052332322045540274}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -77,18 +77,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &8541440354929918021
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8285897502375069986}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &7016298019732503908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,3 +90,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   currentItem: {fileID: 0}
+--- !u!225 &-7052332322045540274
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8285897502375069986}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
