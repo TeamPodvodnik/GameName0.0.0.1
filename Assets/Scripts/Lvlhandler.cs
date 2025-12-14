@@ -2,47 +2,81 @@ using UnityEngine;
 
 public class Lvlhandler : MonoBehaviour
 {
-    private PlayerHealth _playerEntyti;
+    private PlayerHealth _playerEntity;
+    private PlayerClassManager _classManager;
 
-    public level[] levels;
+    public LevelData[] levels;
 
     [System.Serializable]
-    public struct level
+    public struct LevelData
     {
-        public int lvl;
-        public int currentxp;
+        public int level;
         public bool hasSkill;
-        public skill[] skillSetting;
+        public SkillData[] skillSetting;
     }
 
     [System.Serializable]
-    public struct skill
+    public struct SkillData
     {
         public string name;
-        public SkillType TypeOfSkill;
-        public GameObject selfSkill;
+        public SkillType skillType;
+        public CharacterClassData forClass;
+        public MonoBehaviour skillScript;
     }
 
-    public enum SkillType { acitve, passive }
-
+    public enum SkillType { Active, Passive }
 
     private void Start()
     {
-        _playerEntyti = FindFirstObjectByType<PlayerHealth>();
-        _playerEntyti.GetComponent<PriestAbilities>().enabled = false;
-        _playerEntyti.GetComponent<KnightAbilities>().enabled = false;
-        _playerEntyti.GetComponent<MageAbilities>().enabled = false;
+        _playerEntity = FindFirstObjectByType<PlayerHealth>();
+        _classManager = PlayerClassManager.Instance;
+        DisableAllSkills();
+    }
+
+    private void DisableAllSkills()
+    {
+        foreach (LevelData levelData in levels)
+        {
+            foreach (SkillData skill in levelData.skillSetting)
+            {
+                if (skill.skillScript != null)
+                {
+                    skill.skillScript.enabled = false;
+                }
+            }
+        }
     }
 
     public void CheckLevel(int currentLevel)
     {
-        foreach (var levelData in levels)
+        CharacterClassData currentClass = _classManager.GetSelectedClass();
+        if (currentClass == null) return;
+
+        foreach (LevelData levelData in levels)
         {
-            if (levelData.hasSkill != false)
+            if (levelData.hasSkill && currentLevel == levelData.level)
             {
-                if (currentLevel >= levelData.lvl)
+                foreach (SkillData skill in levelData.skillSetting)
                 {
-                    _playerEntyti.GetComponent<PriestAbilities>().enabled = true;
+                    if (skill.forClass == currentClass && skill.skillScript != null)
+                    {
+                        skill.skillScript.enabled = true;
+                        if (skill.forClass.displayName.Contains("Жрец"))
+                        {
+                            PriestAbilities priest = skill.skillScript as PriestAbilities;
+                            if (priest != null) priest.UnlockAbility();
+                        }
+                        else if (skill.forClass.displayName.Contains("Волшебник"))
+                        {
+                            MageAbilities mage = skill.skillScript as MageAbilities;
+                            if (mage != null) mage.UnlockAbility();
+                        }
+                        else if (skill.forClass.displayName.Contains("Рыцарь"))
+                        {
+                            KnightAbilities knight = skill.skillScript as KnightAbilities;
+                            if (knight != null) knight.UnlockAbility();
+                        }
+                    }
                 }
             }
         }

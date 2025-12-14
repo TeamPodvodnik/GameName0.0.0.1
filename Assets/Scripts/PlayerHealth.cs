@@ -57,7 +57,8 @@ public class PlayerHealth : MonoBehaviour
                 Enemy enemy = collision.gameObject.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    TakeDamage(enemy.GetDamage());
+                    float enemyDamage = 10f;
+                    TakeDamage(enemyDamage);
                 }
             }
         }

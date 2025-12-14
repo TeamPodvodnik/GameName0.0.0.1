@@ -12,11 +12,6 @@ public class HealthBar : MonoBehaviour
         {
             playerHealth = FindAnyObjectByType<PlayerHealth>();
         }
-        
-        if (playerHealth == null)
-        {
-            Debug.LogError("PlayerHealth not found!");
-        }
     }
 
     private void Update()

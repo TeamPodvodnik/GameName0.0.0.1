@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerClassManager : MonoBehaviour
@@ -10,7 +9,7 @@ public class PlayerClassManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindObjectByType<PlayerClassManager>();
+                _instance = FindAnyObjectByType<PlayerClassManager>();
                 if (_instance == null)
                 {
                     GameObject obj = new GameObject("PlayerClassManager");
@@ -20,11 +19,6 @@ public class PlayerClassManager : MonoBehaviour
             }
             return _instance;
         }
-    }
-
-    private static T FindObjectByType<T>()
-    {
-        throw new NotImplementedException();
     }
 
     private CharacterClassData _selectedClass;

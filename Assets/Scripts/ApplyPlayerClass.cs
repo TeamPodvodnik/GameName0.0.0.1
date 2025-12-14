@@ -11,10 +11,7 @@ public class ApplyPlayerClass : MonoBehaviour
     {
         CharacterClassData selectedClass = PlayerClassManager.Instance.GetSelectedClass();
 
-        if (selectedClass == null)
-        {
-            return;
-        }
+        if (selectedClass == null) return;
 
         ChangePlayerLook(selectedClass);
         GiveClassWeapon(selectedClass);
@@ -39,7 +36,7 @@ public class ApplyPlayerClass : MonoBehaviour
                 GameObject weaponObject = Instantiate(classInfo.weaponPrefab, weaponParent.position, Quaternion.identity);
                 weaponObject.transform.SetParent(weaponParent);
 
-                ClassWeapon weaponScript = weaponObject.GetComponent<ClassWeapon>();
+                ClassWeapon weaponScript = weaponObject.GetComponentInChildren<ClassWeapon>();
                 if (weaponScript != null)
                 {
                     weaponScript.SetupWeapon(classInfo, gameObject);

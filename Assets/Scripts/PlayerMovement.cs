@@ -24,7 +24,16 @@ public class PlayerMovement : MonoBehaviour
 
         _body.linearVelocity = moveDir * _moveSpeed;
 
-        if (moveDir.x < 0) _sprite.flipX = true;
-        else if (moveDir.x > 0) _sprite.flipX = false;
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(mousePos);
+
+        if (mouseWorld.x > transform.position.x)
+        {
+            _sprite.flipX = false;
+        }
+        else
+        {
+            _sprite.flipX = true;
+        }
     }
 }

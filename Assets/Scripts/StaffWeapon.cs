@@ -17,11 +17,11 @@ public class StaffWeapon : ClassWeapon
         }
     }
 
-    void Update()
+    protected override void Update()
     {
         base.Update();
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame && _canAttack)
         {
             ShootFireball();
         }
@@ -31,7 +31,7 @@ public class StaffWeapon : ClassWeapon
     {
         PerformAttack();
 
-        if (fireballPrefab != null)
+        if (fireballPrefab != null && _classData != null)
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(mousePos);
@@ -46,6 +46,12 @@ public class StaffWeapon : ClassWeapon
             }
 
             fireball.transform.up = direction;
+
+            Fireball fireballScript = fireball.GetComponent<Fireball>();
+            if (fireballScript != null)
+            {
+                fireballScript.damage = _classData.weaponDamage;
+            }
         }
     }
 }

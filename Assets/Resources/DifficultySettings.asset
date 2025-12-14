@@ -16,9 +16,12 @@ MonoBehaviour:
   - name: Easy
     enemyHealth: 50
     enemyDamage: 10
+    xpMultiplier: 0.8
   - name: Normal
     enemyHealth: 100
     enemyDamage: 20
+    xpMultiplier: 1
   - name: Hard
     enemyHealth: 200
     enemyDamage: 30
+    xpMultiplier: 1.5

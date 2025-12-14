@@ -9,12 +9,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - 
   - 
-  - 
+  - Weapon
   - 
   - 
   - 
@@ -45,17 +45,20 @@ TagManager:
   - name: Ground
     uniqueID: 908103825
     locked: 0
-  - name: WalkInfront
-    uniqueID: 2333293639
-    locked: 0
   - name: Shadow
     uniqueID: 2455103501
     locked: 0
   - name: Collision
     uniqueID: 3407334697
     locked: 0
+  - name: WalkInfront
+    uniqueID: 2333293639
+    locked: 0
   - name: Enemy
     uniqueID: 690380787
+    locked: 0
+  - name: Weapon
+    uniqueID: 2393281351
     locked: 0
   - name: Player
     uniqueID: 2864562221

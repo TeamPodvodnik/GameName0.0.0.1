@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: MageClass
   m_EditorClassIdentifier: Assembly-CSharp::CharacterClassData
   displayName: "\u0412\u043E\u043B\u0448\u0435\u0431\u043D\u0438\u043A"
-  classSprite: {fileID: -7285376162372006033, guid: 2b8f29edcba627e4596221f7735980a6, type: 3}
+  classSprite: {fileID: 7475961083183233961, guid: 785c2f096ad48874a8f8e46a24900296, type: 3}
   classDescription: 
-  weaponPrefab: {fileID: 5862890194001779235, guid: 4f745d44e1560a64d801ecb7bd2e9644, type: 3}
+  weaponPrefab: {fileID: 1732938175278005149, guid: b8b808ad795880f4dbd6d0da6dc9f5da, type: 3}
   weaponDamage: 10000
-  attackCooldown: 0.5
+  attackCooldown: 0.3
   healthMultiplier: 1
   speedMultiplier: 1

@@ -12,12 +12,18 @@ public class KnightAbilities : PlayerAbilities
     private float _dashCounter = 0f;
     private float _waitCounter = 0f;
     private Vector2 _dashDir;
+    private bool _isUnlocked = false;
 
-    public void SetupClassAbilities()
+    public void UnlockAbility()
     {
-        if (_currentClass == null || _currentClass.displayName.Contains("׀ûצאנü"))
+        _isUnlocked = true;
+    }
+
+    protected override void SetupClassAbilities()
+    {
+        if (_currentClass == null || !_currentClass.displayName.Contains("׀ûצאנü"))
         {
-            enabled = true;
+            enabled = false;
             return;
         }
 
@@ -39,6 +45,7 @@ public class KnightAbilities : PlayerAbilities
 
     protected override void HandleClassPowers()
     {
+        if (!_isUnlocked) return;
         UpdateTimers();
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame && _waitCounter <= 0f)

@@ -14,11 +14,15 @@ public class Fireball : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            Enemy enemy = other.GetComponentInParent<Enemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
             }
+            Destroy(gameObject);
+        }
+        else if (!other.CompareTag("Player"))
+        {
             Destroy(gameObject);
         }
     }

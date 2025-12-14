@@ -4,23 +4,86 @@ using UnityEngine.InputSystem;
 public class SwordWeapon : ClassWeapon
 {
     private Animator _weaponAnimator;
+    private Collider2D _swordCollider;
+    private Transform _playerTransform;
+    private bool _facingRight = true;
+    private Transform _weaponPivot;
 
     void Start()
     {
         _weaponAnimator = GetComponent<Animator>();
+        _swordCollider = GetComponent<Collider2D>();
+        _playerTransform = _player.transform;
+
+        _weaponPivot = transform.parent;
+
+        if (_swordCollider != null)
+        {
+            _swordCollider.enabled = false;
+            _swordCollider.isTrigger = true;
+        }
+
+        IgnorePlayerCollision();
     }
 
-    void Update()
+    void IgnorePlayerCollision()
     {
-        base.Update();
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && _swordCollider != null)
         {
-            SwingSword();
+            Collider2D playerCollider = player.GetComponent<Collider2D>();
+            if (playerCollider != null)
+            {
+                Physics2D.IgnoreCollision(_swordCollider, playerCollider, true);
+            }
         }
     }
 
-    private void SwingSword()
+    protected override void Update()
+    {
+        base.Update();
+
+        if (UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame && _canAttack)
+        {
+            StartAttack();
+        }
+
+        UpdateWeaponDirection();
+    }
+
+    void TestTurnWeapon()
+    {
+        _facingRight = !_facingRight;
+
+        Vector3 newRotation = transform.localEulerAngles;
+        newRotation.z = _facingRight ? 0f : 180f;
+        transform.localEulerAngles = newRotation;
+    }
+
+    private void UpdateWeaponDirection()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3 playerPosition = _playerTransform.position;
+
+        if (_weaponPivot != null)
+        {
+            Vector3 newScale = _weaponPivot.localScale;
+
+            if (mouseWorld.x < playerPosition.x)
+            {
+                newScale.x = -Mathf.Abs(newScale.x);
+            }
+            else
+            {
+                newScale.x = Mathf.Abs(newScale.x);
+            }
+
+            _weaponPivot.localScale = newScale;
+        }
+    }
+
+    void StartAttack()
     {
         PerformAttack();
 
@@ -30,25 +93,33 @@ public class SwordWeapon : ClassWeapon
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_canAttack) return;
-
-        Debug.Log("Меч столкнулся с: " + other.gameObject.name);
+        if (_swordCollider == null || !_swordCollider.enabled) return;
 
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Враг обнаружен!");
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null)
+            Enemy enemy = other.GetComponentInParent<Enemy>();
+            if (enemy != null && _classData != null)
             {
-                Debug.Log("Наносим урон: " + _classData.weaponDamage);
                 enemy.TakeDamage(_classData.weaponDamage);
             }
-            else
-            {
-                Debug.LogError("Enemy компонент не найден!");
-            }
+        }
+    }
+
+    public void EnableSwordCollider()
+    {
+        if (_swordCollider != null)
+        {
+            _swordCollider.enabled = true;
+        }
+    }
+
+    public void DisableSwordCollider()
+    {
+        if (_swordCollider != null)
+        {
+            _swordCollider.enabled = false;
         }
     }
 }

@@ -1,77 +1,74 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float _health;
-    [SerializeField] private float _damage;
-    private EnemyAI _enemyAI;
+    private int currentHealth;
+    private SpriteRenderer spriteRenderer;
+    private bool isTakingDamage = false;
+    private EnemyAI enemyAI;
+    private NavMeshAgent navMeshAgent;
 
-    private void Start()
+    public Room room;
+
+    void Start()
     {
-        _enemyAI = GetComponentInParent<EnemyAI>();
-        InitializeFromDifficulty();
+        DifficultySettings.DifficultyLevel currentDifficulty = DifficultyManager.Instance.GetCurrentDifficulty();
+        currentHealth = (int)currentDifficulty.enemyHealth;
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        enemyAI = GetComponent<EnemyAI>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        if (enemyAI != null) enemyAI.SetAttackDamage(currentDifficulty.enemyDamage);
     }
 
-    private void InitializeFromDifficulty()
+    public void TakeDamage(float damage)
     {
-        if (DifficultyManager.Instance != null)
-        {
-            var currentDifficulty = DifficultyManager.Instance.GetCurrentDifficulty();
-            _health = currentDifficulty.enemyHealth;
-            _damage = currentDifficulty.enemyDamage;
-        }
-        else
-        {
-            _health = 100f;
-            _damage = 20f;
-        }
+        if (isTakingDamage) return;
+        currentHealth -= (int)damage;
+        StartCoroutine(DamageEffect());
+        if (currentHealth <= 0) DieImmediately();
     }
 
-    public void TakeDamage(float amount)
+    IEnumerator DamageEffect()
     {
-        _health -= amount;
-
-        if (_health <= 0)
-        {
-            Die();
-        }
+        isTakingDamage = true;
+        Color originalColor = spriteRenderer.color;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = originalColor;
+        isTakingDamage = false;
     }
 
-    private void Die()
+    void DieImmediately()
     {
-        if (_enemyAI != null)
+        if (enemyAI != null) Destroy(enemyAI);
+        if (navMeshAgent != null)
         {
-            _enemyAI.enabled = false;
+            navMeshAgent.isStopped = true;
+            Destroy(navMeshAgent);
         }
 
-        if (transform.parent != null)
+        Collider2D col = GetComponentInChildren<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        PlayerXP playerXP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerXP>();
+        if (playerXP != null)
         {
-            Destroy(transform.parent.gameObject);
+            playerXP.AddXP(10f);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        room.EnemyDied();
+
+
+        StartCoroutine(DeathAnimation());
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator DeathAnimation()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            MageAbilities mage = collision.gameObject.GetComponent<MageAbilities>();
-            if (mage == null || !mage.IsShieldActive())
-            {
-                PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(GetDamage());
-                }
-            }
-        }
-    }
-
-    public float GetDamage()
-    {
-        return _damage;
+        Transform visual = spriteRenderer.transform;
+        visual.rotation = Quaternion.Euler(0, 0, 90f);
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }
 }

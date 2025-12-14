@@ -11,18 +11,17 @@ public class MageAbilities : PlayerAbilities
     private float _cooldownLeft = 0f;
     private int _currentShieldHealth;
     private bool _shieldIsUp = false;
+    private bool _isUnlocked = false;
 
-    public void SetupClassAbilities()
+    public void UnlockAbility()
     {
-        if (_currentClass == null || _currentClass.displayName.Contains("Волшебник"))
-        {
-            enabled = true;
-            return;
-        }
+        _isUnlocked = true;
     }
 
     protected override void HandleClassPowers()
     {
+        if (!_isUnlocked) return;
+
         UpdateCooldown();
 
         if (Keyboard.current.spaceKey.isPressed && _cooldownLeft <= 0f && !_shieldIsUp)

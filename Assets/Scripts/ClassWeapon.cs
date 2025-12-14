@@ -29,6 +29,10 @@ public class ClassWeapon : MonoBehaviour
     {
         if (!_canAttack) return;
         _canAttack = false;
-        _cooldownTimer = _classData.attackCooldown;
+
+        if (_classData != null)
+        {
+            _cooldownTimer = _classData.attackCooldown;
+        }
     }
 }

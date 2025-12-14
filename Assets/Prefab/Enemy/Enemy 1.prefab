@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7595569732987470500}
   - component: {fileID: 4650679308111149094}
   - component: {fileID: 1327610014216984269}
+  - component: {fileID: -1256206430549361450}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -68,14 +69,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2ad6f8baa193545b35b7b5a956a2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  _startingState: 0
   _roamingDistanceMax: 7
   _roamingDistanceMin: 3
   _roamingTimerMax: 2
   _attackRange: 1
   _attackCooldown: 2
-  _detectionRange: 5
+  _detectionRange: 20
   _chaseRange: 8
+  _attackDamage: 10
+--- !u!114 &-1256206430549361450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937487142495856416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ea939f7364f96498eab55806f8a5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  room: {fileID: 0}
 --- !u!1 &2266907323834481522
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +192,6 @@ GameObject:
   - component: {fileID: 6778511983523180313}
   - component: {fileID: 7604370526854422149}
   - component: {fileID: 1703098391474221948}
-  - component: {fileID: 1822020946016584831}
   m_Layer: 0
   m_Name: EnemyVis
   m_TagString: Enemy
@@ -333,17 +346,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.073967, y: 6.3}
   m_EdgeRadius: 0
---- !u!114 &1822020946016584831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888948170867603216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1ea939f7364f96498eab55806f8a5a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  _health: 0
-  _damage: 0

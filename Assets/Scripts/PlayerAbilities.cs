@@ -8,7 +8,7 @@ public class PlayerAbilities : MonoBehaviour
     void Start()
     {
         _player = gameObject;
-        _currentClass = PlayerClassManager.Instance.GetSelectedClass();
+        _currentClass = PlayerClassManager.Instance?.GetSelectedClass();
         SetupClassAbilities();
     }
 
@@ -20,7 +20,6 @@ public class PlayerAbilities : MonoBehaviour
     void Update()
     {
         if (_currentClass == null) return;
-
         HandleClassPowers();
     }
 

@@ -1,147 +1,111 @@
 using UnityEngine;
 using UnityEngine.AI;
-using GameName.Utils;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] private State _startingState;
     [SerializeField] private float _roamingDistanceMax = 7f;
     [SerializeField] private float _roamingDistanceMin = 3f;
     [SerializeField] private float _roamingTimerMax = 2f;
-    [SerializeField] private float _attackRange = 1f;
+    [SerializeField] private float _attackRange = 1.5f;
     [SerializeField] private float _attackCooldown = 2f;
     [SerializeField] private float _detectionRange = 5f;
     [SerializeField] private float _chaseRange = 8f;
+    [SerializeField] private float _attackDamage = 10f;
 
     private NavMeshAgent _navMeshAgent;
-    private State _state;
+    private Transform _player;
     private float _roamingTime;
     private float _attackTime;
-    private Vector3 _roamPosition;
     private Vector3 _startingPosition;
-    private Transform _player;
+    private Vector3 _roamPosition;
+    private bool _isDead = false;
     private bool _isPlayerIgnored = false;
 
-    private enum State
-    {
-        Idle,
-        Roaming,
-        Chasing,
-        Attacking
-    }
+    private enum State { Roaming, Chasing, Attacking }
+    private State _state;
+
+    public void SetAttackDamage(float damage) => _attackDamage = damage;
 
     private void Start()
-    {
-        _startingPosition = transform.position;
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
-        _attackTime = 0f;
-    }
-
-    private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
         _navMeshAgent.updateUpAxis = false;
-        _state = _startingState;
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _startingPosition = transform.position;
+        _state = State.Roaming;
+        _roamingTime = _roamingTimerMax;
+        _attackTime = 0f;
+        DifficultySettings.DifficultyLevel diff = DifficultyManager.Instance.GetCurrentDifficulty();
+        _attackDamage = diff.enemyDamage;
     }
 
     private void Update()
     {
-        Enemy _enemy = GetComponentInChildren<Enemy>();
-        if (_enemy == null) return;
-
-        if (_player == null || _isPlayerIgnored) return;
-
+        if (_isDead || _isPlayerIgnored) return;
         _attackTime -= Time.deltaTime;
-
-        float _distanceToPlayer = Vector3.Distance(transform.position, _player.position);
-
-        if (_distanceToPlayer <= _attackRange && _attackTime <= 0f)
+        float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
+        if (distanceToPlayer <= _attackRange && _attackTime <= 0f)
         {
             _state = State.Attacking;
             AttackPlayer();
         }
-        else if (_distanceToPlayer <= _detectionRange && _distanceToPlayer > _attackRange)
+        else if (distanceToPlayer <= _detectionRange && distanceToPlayer > _attackRange)
         {
             _state = State.Chasing;
             ChasePlayer();
         }
-        else if (_distanceToPlayer > _chaseRange && _state == State.Chasing)
+        else if (distanceToPlayer > _chaseRange && _state == State.Chasing) _state = State.Roaming;
+
+        switch (_state)
         {
-            _state = State.Roaming;
-            Roaming();
-        }
-        else
-        {
-            switch (_state)
-            {
-                default:
-                case State.Idle:
-                    break;
-                case State.Roaming:
-                    _roamingTime -= Time.deltaTime;
-                    if (_roamingTime < 0)
-                    {
-                        Roaming();
-                        _roamingTime = _roamingTimerMax;
-                    }
-                    break;
-                case State.Chasing:
-                    ChasePlayer();
-                    break;
-                case State.Attacking:
-                    _state = State.Chasing;
-                    break;
-            }
+            case State.Roaming:
+                _roamingTime -= Time.deltaTime;
+                if (_roamingTime < 0) { Roaming(); _roamingTime = _roamingTimerMax; }
+                break;
+            case State.Chasing: ChasePlayer(); break;
         }
     }
 
     private void Roaming()
     {
-        _roamPosition = GetRoamingPosition();
+        if (_isDead) return;
+        _roamPosition = _startingPosition + Random.insideUnitSphere * Random.Range(_roamingDistanceMin, _roamingDistanceMax);
+        _roamPosition.z = 0;
         _navMeshAgent.SetDestination(_roamPosition);
     }
 
-    private void ChasePlayer()
-    {
-        _navMeshAgent.SetDestination(_player.position);
-    }
-
-    private Vector3 GetRoamingPosition()
-    {
-        return _startingPosition + Utils.GetRandomDir() * Random.Range(_roamingDistanceMin, _roamingDistanceMax);
-    }
+    private void ChasePlayer() { if (!_isDead) _navMeshAgent.SetDestination(_player.position); }
 
     private void AttackPlayer()
     {
-        Enemy _enemy = GetComponentInChildren<Enemy>();
-        if (_enemy == null) return;
-
-        if (_player == null) return;
-
+        if (_isDead) return;
         _navMeshAgent.SetDestination(transform.position);
-
-        PlayerHealth _playerHealth = _player.GetComponent<PlayerHealth>();
-        if (_playerHealth != null)
-        {
-            _playerHealth.TakeDamage(_enemy.GetDamage());
-        }
-
+        PlayerHealth playerHealth = _player.GetComponent<PlayerHealth>();
+        if (playerHealth != null) playerHealth.TakeDamage(_attackDamage);
         _attackTime = _attackCooldown;
+        _state = State.Chasing;
     }
 
-    public void SetPlayerIgnored(bool _ignored)
+    public void SetDead()
     {
-        _isPlayerIgnored = _ignored;
-        if (_ignored)
+        _isDead = true;
+        _attackTime = 999f;
+        if (_navMeshAgent != null)
         {
-            _state = State.Roaming;
-            Roaming();
+            _navMeshAgent.isStopped = true;
+            _navMeshAgent.velocity = Vector3.zero;
+            _navMeshAgent.enabled = false;
+            Destroy(_navMeshAgent);
         }
+        this.enabled = false;
     }
 
-    public bool IsPlayerIgnored()
+    public void SetPlayerIgnored(bool ignored)
     {
-        return _isPlayerIgnored;
+        _isPlayerIgnored = ignored;
+        if (ignored) { _state = State.Roaming; Roaming(); }
     }
+
+    public bool IsPlayerIgnored() => _isPlayerIgnored;
 }
