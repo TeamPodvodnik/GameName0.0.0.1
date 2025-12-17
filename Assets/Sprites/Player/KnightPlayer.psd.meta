@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bbda5e025d83bad4ba14f35e69342473
+guid: f7295d62e34b40e4eb09e7d41d68e786
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8596640243658272642
-    second: Enemy_0
+      213: 6880694844787424158
+    second: KnightPlayer_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Enemy_0
+      name: KnightPlayer_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 660
-        height: 630
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 6
+        y: 16
+        width: 68
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 28f241131c66d4770800000000000000
-      internalID: 8596640243658272642
+      spriteID: e9b7a6f71832d7f50800000000000000
+      internalID: 6880694844787424158
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: c2a908c460b3ff3429867a02df8b37be
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Enemy_0: 8596640243658272642
+      KnightPlayer_0: 6880694844787424158
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -30,7 +30,7 @@ public class PlayerXP : MonoBehaviour
         float gainedXP = baseXP * multiplier;
         currentXP += gainedXP;
 
-        if (currentXP >= xpToNextLevel)
+        while (currentXP >= xpToNextLevel && currentLevel < maxLevel)
         {
             LevelUp();
         }

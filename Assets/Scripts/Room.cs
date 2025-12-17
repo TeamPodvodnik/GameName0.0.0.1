@@ -4,8 +4,10 @@ public class Room : MonoBehaviour
 {
     public GameObject[] doors;
     public MobSpawner[] spawners;
-    private int enemiesLeft;
+    public bool isBossRoom = false;
+    public GameObject portalObject;
 
+    private int enemiesLeft;
     private bool activated = false;
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -26,7 +28,13 @@ public class Room : MonoBehaviour
         enemiesLeft--;
 
         if (enemiesLeft <= 0)
+        {
             OpenDoors();
+            if (isBossRoom && portalObject != null)
+            {
+                portalObject.SetActive(true);
+            }
+        }
     }
 
     void CloseDoors()

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bbda5e025d83bad4ba14f35e69342473
+guid: 47d283dd13f3f3f46bad7f5d7f482c6a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8596640243658272642
-    second: Enemy_0
+      213: 4847971342823223103
+    second: BossOfTheGYM_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Enemy_0
+      name: BossOfTheGYM_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 660
-        height: 630
+        x: 13
+        y: 11
+        width: 566
+        height: 560
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 28f241131c66d4770800000000000000
-      internalID: 8596640243658272642
+      spriteID: f3f604a2044774340800000000000000
+      internalID: 4847971342823223103
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: c2a908c460b3ff3429867a02df8b37be
+    spriteID: a28a90eca096c89419815fccb06fdc8d
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Enemy_0: 8596640243658272642
+      BossOfTheGYM_0: 4847971342823223103
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

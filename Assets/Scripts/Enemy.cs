@@ -4,49 +4,52 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    private int currentHealth;
-    private SpriteRenderer spriteRenderer;
-    private bool isTakingDamage = false;
-    private EnemyAI enemyAI;
-    private NavMeshAgent navMeshAgent;
+    [SerializeField] private float _baseXP = 10f;
+    [SerializeField] private float _xpMultiplier = 1f;
+
+    private int _currentHealth;
+    private SpriteRenderer _spriteRenderer;
+    private bool _isTakingDamage = false;
+    private EnemyAI _enemyAI;
+    private NavMeshAgent _navMeshAgent;
 
     public Room room;
 
     void Start()
     {
         DifficultySettings.DifficultyLevel currentDifficulty = DifficultyManager.Instance.GetCurrentDifficulty();
-        currentHealth = (int)currentDifficulty.enemyHealth;
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        enemyAI = GetComponent<EnemyAI>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        if (enemyAI != null) enemyAI.SetAttackDamage(currentDifficulty.enemyDamage);
+        _currentHealth = (int)currentDifficulty.enemyHealth;
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _enemyAI = GetComponent<EnemyAI>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        if (_enemyAI != null) _enemyAI.SetAttackDamage(currentDifficulty.enemyDamage);
     }
 
     public void TakeDamage(float damage)
     {
-        if (isTakingDamage) return;
-        currentHealth -= (int)damage;
+        if (_isTakingDamage) return;
+        _currentHealth -= (int)damage;
         StartCoroutine(DamageEffect());
-        if (currentHealth <= 0) DieImmediately();
+        if (_currentHealth <= 0) DieImmediately();
     }
 
     IEnumerator DamageEffect()
     {
-        isTakingDamage = true;
-        Color originalColor = spriteRenderer.color;
-        spriteRenderer.color = Color.red;
+        _isTakingDamage = true;
+        Color originalColor = _spriteRenderer.color;
+        _spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = originalColor;
-        isTakingDamage = false;
+        _spriteRenderer.color = originalColor;
+        _isTakingDamage = false;
     }
 
     void DieImmediately()
     {
-        if (enemyAI != null) Destroy(enemyAI);
-        if (navMeshAgent != null)
+        if (_enemyAI != null) Destroy(_enemyAI);
+        if (_navMeshAgent != null)
         {
-            navMeshAgent.isStopped = true;
-            Destroy(navMeshAgent);
+            _navMeshAgent.isStopped = true;
+            Destroy(_navMeshAgent);
         }
 
         Collider2D col = GetComponentInChildren<Collider2D>();
@@ -55,18 +58,18 @@ public class Enemy : MonoBehaviour
         PlayerXP playerXP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerXP>();
         if (playerXP != null)
         {
-            playerXP.AddXP(10f);
+            float finalXP = _baseXP * _xpMultiplier;
+            playerXP.AddXP(finalXP);
         }
 
-        room.EnemyDied();
-
+        if (room != null) room.EnemyDied();
 
         StartCoroutine(DeathAnimation());
     }
 
     IEnumerator DeathAnimation()
     {
-        Transform visual = spriteRenderer.transform;
+        Transform visual = _spriteRenderer.transform;
         visual.rotation = Quaternion.Euler(0, 0, 90f);
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);

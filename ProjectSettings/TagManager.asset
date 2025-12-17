@@ -48,11 +48,14 @@ TagManager:
   - name: Shadow
     uniqueID: 2455103501
     locked: 0
+  - name: WalkInfront
+    uniqueID: 2333293639
+    locked: 0
   - name: Collision
     uniqueID: 3407334697
     locked: 0
-  - name: WalkInfront
-    uniqueID: 2333293639
+  - name: Decor
+    uniqueID: 4007787697
     locked: 0
   - name: Enemy
     uniqueID: 690380787
@@ -65,9 +68,6 @@ TagManager:
     locked: 0
   - name: WalkBehind
     uniqueID: 2146341149
-    locked: 0
-  - name: Decor
-    uniqueID: 4007787697
     locked: 0
   m_RenderingLayers:
   - Default
