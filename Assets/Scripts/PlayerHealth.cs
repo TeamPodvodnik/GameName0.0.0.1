@@ -104,4 +104,10 @@ public class PlayerHealth : MonoBehaviour
     {
         _lvlHandler.CheckLevel(currentLvl);
     }
+
+    public void AddHealthBonus(float bonus)
+    {
+        _maxHealth += bonus;
+        _currentHealth += bonus;
+    }
 }

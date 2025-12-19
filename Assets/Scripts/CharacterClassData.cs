@@ -12,8 +12,4 @@ public class CharacterClassData : ScriptableObject
     public GameObject weaponPrefab;
     public float weaponDamage = 25f;
     public float attackCooldown = 0.5f;
-
-    [Header("Class Stats")]
-    public float healthMultiplier = 1f;
-    public float speedMultiplier = 1f;
 }

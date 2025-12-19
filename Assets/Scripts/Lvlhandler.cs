@@ -22,6 +22,8 @@ public class Lvlhandler : MonoBehaviour
         public SkillType skillType;
         public CharacterClassData forClass;
         public MonoBehaviour skillScript;
+        public float healthBonus;
+        public float damageBonus;
     }
 
     public enum SkillType { Active, Passive }
@@ -58,23 +60,31 @@ public class Lvlhandler : MonoBehaviour
             {
                 foreach (SkillData skill in levelData.skillSetting)
                 {
-                    if (skill.forClass == currentClass && skill.skillScript != null)
+                    if (skill.forClass == currentClass)
                     {
-                        skill.skillScript.enabled = true;
-                        if (skill.forClass.displayName.Contains("Жрец"))
+                        if (skill.skillType == SkillType.Passive)
                         {
-                            PriestAbilities priest = skill.skillScript as PriestAbilities;
-                            if (priest != null) priest.UnlockAbility();
+                            _playerEntity.AddHealthBonus(skill.healthBonus);
+                            PlayerBonus.AddDamageBonus(skill.damageBonus);
                         }
-                        else if (skill.forClass.displayName.Contains("Волшебник"))
+                        else if (skill.skillType == SkillType.Active && skill.skillScript != null)
                         {
-                            MageAbilities mage = skill.skillScript as MageAbilities;
-                            if (mage != null) mage.UnlockAbility();
-                        }
-                        else if (skill.forClass.displayName.Contains("Рыцарь"))
-                        {
-                            KnightAbilities knight = skill.skillScript as KnightAbilities;
-                            if (knight != null) knight.UnlockAbility();
+                            skill.skillScript.enabled = true;
+                            if (skill.forClass.displayName.Contains("Жрец"))
+                            {
+                                PriestAbilities priest = skill.skillScript as PriestAbilities;
+                                if (priest != null) priest.UnlockAbility();
+                            }
+                            else if (skill.forClass.displayName.Contains("Волшебник"))
+                            {
+                                MageAbilities mage = skill.skillScript as MageAbilities;
+                                if (mage != null) mage.UnlockAbility();
+                            }
+                            else if (skill.forClass.displayName.Contains("Рыцарь"))
+                            {
+                                KnightAbilities knight = skill.skillScript as KnightAbilities;
+                                if (knight != null) knight.UnlockAbility();
+                            }
                         }
                     }
                 }

@@ -50,7 +50,8 @@ public class StaffWeapon : ClassWeapon
             Fireball fireballScript = fireball.GetComponent<Fireball>();
             if (fireballScript != null)
             {
-                fireballScript.damage = _classData.weaponDamage;
+                float finalDamage = _classData.weaponDamage * PlayerBonus.DamageMultiplier;
+                fireballScript.damage = finalDamage;
             }
         }
     }

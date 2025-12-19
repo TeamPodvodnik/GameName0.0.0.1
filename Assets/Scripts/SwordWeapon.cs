@@ -102,7 +102,8 @@ public class SwordWeapon : ClassWeapon
             Enemy enemy = other.GetComponentInParent<Enemy>();
             if (enemy != null && _classData != null)
             {
-                enemy.TakeDamage(_classData.weaponDamage);
+                float finalDamage = _classData.weaponDamage * PlayerBonus.DamageMultiplier;
+                enemy.TakeDamage(finalDamage);
             }
         }
     }

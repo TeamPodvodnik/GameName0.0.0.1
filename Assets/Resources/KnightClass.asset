@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterClassData
   displayName: "\u0420\u044B\u0446\u0430\u0440\u044C"
   classSprite: {fileID: 5963204450062412982, guid: 01bb05aab4a9a2d4a96ec6f6827311af, type: 3}
-  classDescription: 
+  classDescription: "\u0425\u0440\u0430\u0431\u0440\u044B\u0439 \u0432\u043E\u0438\u043D"
   weaponPrefab: {fileID: 6626376419127128480, guid: eeebbb733f4f5914289fbfb7ac243046, type: 3}
-  weaponDamage: 10000
+  weaponDamage: 50
   attackCooldown: 0.7
-  healthMultiplier: 1
-  speedMultiplier: 1

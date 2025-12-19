@@ -54,7 +54,6 @@ public class PlayerXP : MonoBehaviour
         {
             _lvlHandler.CheckLevel(currentLevel);
         }
-
     }
 
     private void UpdateXPUI()
